@@ -1,0 +1,29 @@
+node_modules
+.tmp
+bower_components
+coverage
+
+# IntelliJ
+.idea
+*.iml
+
+# Eclipse
+.project
+.metadata
+
+# Sublime
+*.tmlanguage.cache
+*.tmPreferences.cache
+*.stTheme.cache
+*.sublime-workspace
+*.sublime-project
+
+# Mac
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
