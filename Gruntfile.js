@@ -109,15 +109,6 @@ module.exports = function (grunt) {
       }
     },
 
-    copy: {
-      dist: {
-        files: [
-          // includes files within path
-          { src: ['README.md', 'LICENSE.md'], dest: 'dist/' }
-        ]
-      }
-    },
-
     // Unit test settings
     karma: {
       options: {
@@ -190,8 +181,7 @@ module.exports = function (grunt) {
       'babel:server',
       'ngAnnotate',
       'concat:dist',
-      'uglify:dist',
-      'copy:dist'
+      'uglify:dist'
     ]);
   });
 };

@@ -1,6 +1,6 @@
 {
   "name": "jarb-angular-formly",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Validating forms through JaRB.",
   "main": "index.js",
   "scripts": {
@@ -36,7 +36,6 @@
     "grunt-bump": "0.3.1",
     "grunt-concurrent": "1.0.0",
     "grunt-contrib-clean": "1.0.0",
-    "grunt-contrib-copy": "1.0.0",
     "grunt-contrib-concat": "0.5.1",
     "grunt-contrib-connect": "1.0.2",
     "grunt-contrib-uglify": "0.9.1",

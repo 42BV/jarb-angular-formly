@@ -1,0 +1,36 @@
+{
+  "name": "jarb-angular-formly",
+  "version": "0.0.2",
+  "description": "Validating forms through JaRB.",
+  "main": "dist/jarb-angular-formly.js",
+  "authors": [
+    "Maarten Hus"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "JaRB",
+    "formly",
+    "Angular"
+  ],
+  "homepage": "https://github.com/42BV/jarb-angular-formly",
+  "moduleType": [
+    "globals"
+  ],
+  "ignore": [
+    "**/.*",
+    "app",
+    ".tmp",
+    "Gruntfile.js",
+    "karma.conf.js",
+    ".eslintrc",
+    "package.json",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.5.8",
+    "lodash": "^4.14.0"
+  },
+}
