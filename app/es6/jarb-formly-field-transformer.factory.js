@@ -86,7 +86,7 @@ angular.module('jarb-angular-formly')
      * @return {[field]}        A transformed array of formly fields
      */
     function transform(fields, model, options) {
-      let constraints = constraintsStore.getConstraints();
+      const constraints = constraintsStore.getConstraints();
 
       return fields.map((field) => {
         if (entityNameIsDefined(options) === false) {
@@ -150,21 +150,14 @@ angular.module('jarb-angular-formly')
      * @throws {error} When the validator doesn't match the format 'className.fieldName'.
      */
     function validationRulesFor(validator, constraints) {
-      var parts = validator.split('.');
+      const parts = validator.split('.');
 
-      var className = parts[0];
-      var propertyName = parts[1];
+      const [className, propertyName] = parts;
 
-      var classConstraints = constraints[className];
+      const classConstraints = constraints[className];
 
       if (classConstraints) {
-        var validationRules = classConstraints[propertyName];
-
-        if (validationRules) {
-          return validationRules;
-        } else {
-          return false;
-        }
+        return _.get(classConstraints, propertyName, false);
       } else {
         return false;
       }
@@ -179,7 +172,7 @@ angular.module('jarb-angular-formly')
      * @param {element} The HTML element which may get a ng-pattern attribute.
      */
     function addPatternAttribute(type, validationRules, field) {
-      var pattern = false;
+      let pattern = false;
 
       if (type === 'number' && validationRules.fractionLength > 0) { //eslint-disable-line angular/typecheck-number
         pattern = jarbRegex.fractionNumberRegex(validationRules.fractionLength);

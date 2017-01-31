@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Service: constraintsStore', function () {
+describe('Service: constraintsStore', () => {
   beforeEach(module('jarb-angular-formly'));
 
   // instantiate service
@@ -12,18 +12,18 @@ describe('Service: constraintsStore', function () {
     $httpBackend = _$httpBackend_;
   }));
 
-  it('should set initial constraints to null', function () {
+  it('should set initial constraints to null', () => {
     expect(constraintsStore.getConstraints()).toBe(null);
   });
 
-  it('should know how to set the constraints', function () {
+  it('should know how to set the constraints', () => {
     // 10 is a faux value for a constraint used for testing.
     constraintsStore.setConstraints(10);
 
     expect(constraintsStore.getConstraints()).toBe(10);
   });
 
-  it('should call callbacks to the observers when constraints change', function () {
+  it('should call callbacks to the observers when constraints change', () => {
     const observerA = createAndRegisterSpy();
     const observerB = createAndRegisterSpy();
 
@@ -46,7 +46,7 @@ describe('Service: constraintsStore', function () {
     expect(observerB.spy.callback).toHaveBeenCalledWith(43);
   });
 
-  it('should know how to get and set the constraints from the back-end', function () {
+  it('should know how to get and set the constraints from the back-end', () => {
     $httpBackend.expectGET('api/constraints').respond('haxors');
 
     constraintsStore.loadConstraints('api/constraints');

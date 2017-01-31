@@ -1,17 +1,17 @@
 'use strict';
 
-describe('Factory: jarbRegex', function () {
+describe('Factory: jarbRegex', () => {
   beforeEach(module('jarb-angular-formly'));
 
   // instantiate service
-  var jarbRegex;
+  let jarbRegex;
 
-  beforeEach(inject(function (_jarbRegex_) {
+  beforeEach(inject((_jarbRegex_) => {
     jarbRegex = _jarbRegex_;
   }));
 
-  it('should know how to create a valid number regex', function () {
-    var regex = jarbRegex.numberRegex();
+  it('should know how to create a valid number regex', () => {
+    const regex = jarbRegex.numberRegex();
 
     expect(regex.test('aap')).toBe(false);
     expect(regex.test('100.0')).toBe(false);
@@ -26,8 +26,8 @@ describe('Factory: jarbRegex', function () {
     expect(regex.test('-9999')).toBe(true);
   });
 
-  it('should know how to create a valid fraction regex', function () {
-    var regex = jarbRegex.fractionNumberRegex(5);
+  it('should know how to create a valid fraction regex', () => {
+    const regex = jarbRegex.fractionNumberRegex(5);
 
     expect(regex.test('aap')).toBe(false);
     expect(regex.test('24e')).toBe(false);
@@ -75,11 +75,11 @@ describe('Factory: jarbRegex', function () {
     expect(regex.test('0.123456')).toBe(false);
   });
 
-  it('should know how to transform regex to a formly pattern', function() {
-    var numberRegex = jarbRegex.numberRegex();
+  it('should know how to transform regex to a formly pattern', () => {
+    const numberRegex = jarbRegex.numberRegex();
     expect(jarbRegex.convertRegexToFormlyPattern(numberRegex)).toBe('^-?\\d+$');
 
-    var fractionNumberRegex = jarbRegex.fractionNumberRegex(3);
+    const fractionNumberRegex = jarbRegex.fractionNumberRegex(3);
     expect(jarbRegex.convertRegexToFormlyPattern(fractionNumberRegex)).toBe('^-?\\d+(\\.\\d{1,3})?$');
 
   });

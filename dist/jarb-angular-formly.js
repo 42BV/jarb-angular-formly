@@ -147,6 +147,8 @@ angular.module('jarb-angular-formly').factory('constraintsStore', ["$http", func
  * to it.
  */
 
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
 angular.module('jarb-angular-formly').factory('jarbFormlyFieldTransformer', ["constraintsStore", "jarbRegex", function (constraintsStore, jarbRegex) {
   return { transform: transform };
 
@@ -289,19 +291,14 @@ angular.module('jarb-angular-formly').factory('jarbFormlyFieldTransformer', ["co
   function validationRulesFor(validator, constraints) {
     var parts = validator.split('.');
 
-    var className = parts[0];
-    var propertyName = parts[1];
+    var _parts = _slicedToArray(parts, 2),
+        className = _parts[0],
+        propertyName = _parts[1];
 
     var classConstraints = constraints[className];
 
     if (classConstraints) {
-      var validationRules = classConstraints[propertyName];
-
-      if (validationRules) {
-        return validationRules;
-      } else {
-        return false;
-      }
+      return _.get(classConstraints, propertyName, false);
     } else {
       return false;
     }

@@ -44,7 +44,7 @@ angular.module('jarb-angular-formly')
      * @return {string}      The resulting formly pattern
      */
     function convertRegexToFormlyPattern(regex) {
-      var stringRegex = '' + regex;
+      const stringRegex = '' + regex;
       return stringRegex.substring(1, stringRegex.length - 1);
     }
   });
