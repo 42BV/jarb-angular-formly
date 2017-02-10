@@ -67,15 +67,17 @@ describe('Service: jarbFormlyFieldTransformer', function () {
           "max": null,
           "name": "password"
         },
-        // In the cases of LocalDates or LocalDateTimes we should ignore the maximumLength
+        // In the cases of Non String types we should ignore the maximumLength
         birthDate: {
           javaType: "java.time.LocalDate",
           "types": ["date"],
+          minimumLength: 1,
           maximumLength: 8
         },
         deathTime: {
           javaType: "java.time.LocalDateTime",
           "types": ["date"],
+          minimumLength: 1,
           maximumLength: 14
         }
       }
@@ -91,36 +93,6 @@ describe('Service: jarbFormlyFieldTransformer', function () {
     spyOn(constraintsStore, 'getConstraints').and.returnValue(constraints);
 
   }));
-
-  it('should know how to add a maxlength, minlength and required', () => {
-    const formlyFields = [{
-      id: 'name',
-      key: 'name',
-      type: 'input',
-      templateOptions: {
-        type: 'name',
-        label: 'Name',
-        placeholder: 'Please enter name of the hero'
-      }
-    }];
-
-    const expected = [{
-      id: 'name',
-      key: 'name',
-      type: 'input',
-      templateOptions: {
-        type: 'name',
-        label: 'Name',
-        placeholder: 'Please enter name of the hero',
-        required: true,
-        minlength: 5,
-        maxlength: 50
-      }
-    }];
-
-    expect(jarbFormlyFieldTransformer.transform(formlyFields, null, entityNameOptions)).toEqual(expected);
-  });
-
 
   it('should know how to add min and max', () => {
     const formlyFields = [{
@@ -287,31 +259,62 @@ describe('Service: jarbFormlyFieldTransformer', function () {
     expect(jarbFormlyFieldTransformer.transform(formlyFields, null, entityNameOptions)).toEqual(expected);
   });
 
-  it('should should not add maxLengths on LocalDateTimes', () => {
-    const formlyFields = [{
-      id: 'deathTime',
-      key: 'deathTime',
-      type: 'date',
-      templateOptions: {
-        type: 'deathTime',
-        label: 'deathTime',
-        hasTime: true,
-        placeholder: 'Please enter time of death of the hero'
-      }
-    }];
+  describe('minlength and maxlength', () => {
+    it('should know how to add a maxlength, minlength and required to a String type', () => {
+      const formlyFields = [{
+        id: 'name',
+        key: 'name',
+        type: 'input',
+        templateOptions: {
+          type: 'name',
+          label: 'Name',
+          placeholder: 'Please enter name of the hero'
+        }
+      }];
 
-    const expected = [{
-      id: 'deathTime',
-      key: 'deathTime',
-      type: 'date',
-      templateOptions: {
-        type: 'deathTime',
-        label: 'deathTime',
-        hasTime: true,
-        placeholder: 'Please enter time of death of the hero'
-      }
-    }];
+      const expected = [{
+        id: 'name',
+        key: 'name',
+        type: 'input',
+        templateOptions: {
+          type: 'name',
+          label: 'Name',
+          placeholder: 'Please enter name of the hero',
+          required: true,
+          minlength: 5,
+          maxlength: 50
+        }
+      }];
 
-    expect(jarbFormlyFieldTransformer.transform(formlyFields, null, entityNameOptions)).toEqual(expected);
+      expect(jarbFormlyFieldTransformer.transform(formlyFields, null, entityNameOptions)).toEqual(expected);
+    });
+
+    it('should should not add max / min Lengths on non Strings type', () => {
+      const formlyFields = [{
+        id: 'deathTime',
+        key: 'deathTime',
+        type: 'date',
+        templateOptions: {
+          type: 'deathTime',
+          label: 'deathTime',
+          hasTime: true,
+          placeholder: 'Please enter time of death of the hero'
+        }
+      }];
+
+      const expected = [{
+        id: 'deathTime',
+        key: 'deathTime',
+        type: 'date',
+        templateOptions: {
+          type: 'deathTime',
+          label: 'deathTime',
+          hasTime: true,
+          placeholder: 'Please enter time of death of the hero'
+        }
+      }];
+
+      expect(jarbFormlyFieldTransformer.transform(formlyFields, null, entityNameOptions)).toEqual(expected);
+    });
   });
 });

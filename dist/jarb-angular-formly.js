@@ -244,12 +244,14 @@ angular.module('jarb-angular-formly').factory('jarbFormlyFieldTransformer', ["co
         _.set(field, 'templateOptions.required', true);
       }
 
-      if (validationRules.minimumLength) {
-        _.set(field, 'templateOptions.minlength', validationRules.minimumLength);
-      }
+      if (validationRules.javaType === 'java.lang.String') {
+        if (validationRules.minimumLength) {
+          _.set(field, 'templateOptions.minlength', validationRules.minimumLength);
+        }
 
-      if (validationRules.maximumLength && !isDateOrDateTime(validationRules.javaType)) {
-        _.set(field, 'templateOptions.maxlength', validationRules.maximumLength);
+        if (validationRules.maximumLength) {
+          _.set(field, 'templateOptions.maxlength', validationRules.maximumLength);
+        }
       }
 
       if (validationRules.min) {
@@ -352,17 +354,6 @@ angular.module('jarb-angular-formly').factory('jarbFormlyFieldTransformer', ["co
     }
 
     return 'text';
-  }
-
-  /**
-   * Returns whether or not the given type is a LocalDate or LocalDateTime.
-   * If this is the case we need to ignore the maxLength constraints as we communicate these to the backend
-   * in a different format than we're saving it in the database.
-   * @param type Field type
-   * @returns {boolean} true if the type is either a LocalDate or LocalDateTime.
-   */
-  function isDateOrDateTime(type) {
-    return type === 'java.time.LocalDate' || type === 'java.time.LocalDateTime';
   }
 }]);
 //# sourceMappingURL=jarb-formly-field-transformer.factory.js.map
