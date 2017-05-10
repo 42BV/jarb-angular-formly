@@ -93,8 +93,7 @@ angular.module('jarb-angular-formly')
           return field;
         }
 
-        const validationKey = `${options.data.entityName}.${field.key}`;
-        const validationRules = validationRulesFor(validationKey, constraints);
+        const validationRules = validationRulesFor(options.data.entityName, field.key, constraints);
 
         if (validationRules === false) {
           return field;
@@ -141,21 +140,18 @@ angular.module('jarb-angular-formly')
     }
 
     /**
-     * Finds the validation rules for a specific validator in the
+     * Finds the validation rules for a specific className and property in the
      * constraints object.
      *
      * If no constrains can be found for a validator the boolean false
      * is returned.
      *
-     * @param  {validator} 'validator' is a string with the format: 'Class.field' for example: 'User.age'
+     * @param  {className} is a string representing the entity for example 'Hero'
+     * @param  {propertyName} is a string representing a property of the entity for example 'age'
      * @param  {constraints} The constraints to find the validator in.
      * @throws {error} When the validator doesn't match the format 'className.fieldName'.
      */
-    function validationRulesFor(validator, constraints) {
-      const parts = validator.split('.');
-
-      const [className, propertyName] = parts;
-
+    function validationRulesFor(className, propertyName, constraints) {
       const classConstraints = constraints[className];
 
       if (classConstraints) {

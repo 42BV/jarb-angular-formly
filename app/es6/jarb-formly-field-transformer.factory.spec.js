@@ -79,6 +79,21 @@ describe('Service: jarbFormlyFieldTransformer', function () {
           "types": ["date"],
           minimumLength: 1,
           maximumLength: 14
+        },
+        "address.city": {
+          "javaType": "java.lang.String",
+          "types": [
+            "text"
+          ],
+          "required": false,
+          "minimumLength": null,
+          "maximumLength": 255,
+          "fractionLength": 0,
+          "radix": 10,
+          "pattern": null,
+          "min": null,
+          "max": null,
+          "name": "address.city"
         }
       }
     };
@@ -311,6 +326,33 @@ describe('Service: jarbFormlyFieldTransformer', function () {
           label: 'deathTime',
           hasTime: true,
           placeholder: 'Please enter time of death of the hero'
+        }
+      }];
+
+      expect(jarbFormlyFieldTransformer.transform(formlyFields, null, entityNameOptions)).toEqual(expected);
+    });
+
+    it('should work for @Embeddable properties', () => {
+      const formlyFields = [{
+        id: 'address.city',
+        key: 'address.city',
+        type: 'text',
+        templateOptions: {
+          type: 'city',
+          label: 'City',
+          placeholder: 'Please enter city the hero lives in.'
+        }
+      }];
+
+      const expected = [{
+        id: 'address.city',
+        key: 'address.city',
+        type: 'text',
+        templateOptions: {
+          type: 'city',
+          label: 'City',
+          placeholder: 'Please enter city the hero lives in.',
+          maxlength: 255
         }
       }];
 
