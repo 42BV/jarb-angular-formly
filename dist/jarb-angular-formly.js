@@ -147,8 +147,6 @@ angular.module('jarb-angular-formly').factory('constraintsStore', ["$http", func
  * to it.
  */
 
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
 angular.module('jarb-angular-formly').factory('jarbFormlyFieldTransformer', ["constraintsStore", "jarbRegex", function (constraintsStore, jarbRegex) {
   return { transform: transform };
 
@@ -226,15 +224,18 @@ angular.module('jarb-angular-formly').factory('jarbFormlyFieldTransformer', ["co
    * @return {[field]}        A transformed array of formly fields
    */
   function transform(fields, model, options) {
+    if (entityNameIsDefined(options) === false) {
+      return fields;
+    }
+
     var constraints = constraintsStore.getConstraints();
 
     return fields.map(function (field) {
-      if (entityNameIsDefined(options) === false) {
+      if (_.get(field, 'data.ignoreJarbConstraints') === true) {
         return field;
       }
 
-      var validationKey = options.data.entityName + '.' + field.key;
-      var validationRules = validationRulesFor(validationKey, constraints);
+      var validationRules = validationRulesFor(options.data.entityName, field.key, constraints);
 
       if (validationRules === false) {
         return field;
@@ -280,23 +281,18 @@ angular.module('jarb-angular-formly').factory('jarbFormlyFieldTransformer', ["co
   }
 
   /**
-   * Finds the validation rules for a specific validator in the
+   * Finds the validation rules for a specific className and property in the
    * constraints object.
    *
    * If no constrains can be found for a validator the boolean false
    * is returned.
    *
-   * @param  {validator} 'validator' is a string with the format: 'Class.field' for example: 'User.age'
+   * @param  {className} is a string representing the entity for example 'Hero'
+   * @param  {propertyName} is a string representing a property of the entity for example 'age'
    * @param  {constraints} The constraints to find the validator in.
    * @throws {error} When the validator doesn't match the format 'className.fieldName'.
    */
-  function validationRulesFor(validator, constraints) {
-    var parts = validator.split('.');
-
-    var _parts = _slicedToArray(parts, 2),
-        className = _parts[0],
-        propertyName = _parts[1];
-
+  function validationRulesFor(className, propertyName, constraints) {
     var classConstraints = constraints[className];
 
     if (classConstraints) {
