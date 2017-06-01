@@ -94,6 +94,21 @@ describe('Service: jarbFormlyFieldTransformer', function () {
           "min": null,
           "max": null,
           "name": "address.city"
+        },
+        "locallyIgnoredProperty": {
+          "javaType": "java.lang.String",
+          "types": [
+            "text"
+          ],
+          "required": false,
+          "minimumLength": null,
+          "maximumLength": 255,
+          "fractionLength": 0,
+          "radix": 10,
+          "pattern": null,
+          "min": null,
+          "max": null,
+          "name": "locallyIgnoredProperty"
         }
       }
     };
@@ -240,6 +255,25 @@ describe('Service: jarbFormlyFieldTransformer', function () {
           type: 'name',
           label: 'Superpower',
           placeholder: 'Please enter the super power of the hero'
+        }
+      }];
+
+      const expected = angular.copy(formlyFields);
+      expect(jarbFormlyFieldTransformer.transform(formlyFields, null, entityNameOptions)).toEqual(expected);
+    });
+
+    it('should not change the field when it is marked to be ignored', () => {
+      const formlyFields = [{
+        id: 'locallyIgnoredProperty',
+        key: 'locallyIgnoredProperty',
+        type: 'input',
+        data: {
+          ignoreJarbConstraints: true
+        },
+        templateOptions: {
+          type: 'name',
+          label: 'Locally ignored property',
+          placeholder: 'We do not want any JaRB validation for this field!'
         }
       }];
 
