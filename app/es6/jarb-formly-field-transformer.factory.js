@@ -86,10 +86,14 @@ angular.module('jarb-angular-formly')
      * @return {[field]}        A transformed array of formly fields
      */
     function transform(fields, model, options) {
+      if (entityNameIsDefined(options) === false) {
+        return fields;
+      }
+
       const constraints = constraintsStore.getConstraints();
 
       return fields.map((field) => {
-        if (entityNameIsDefined(options) === false) {
+        if (_.get(field, 'data.ignoreJarbConstraints') === true) {
           return field;
         }
 
